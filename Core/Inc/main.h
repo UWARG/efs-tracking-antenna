@@ -28,7 +28,6 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l5xx_hal.h"
-
 #include "stm32l5xx_ll_ucpd.h"
 #include "stm32l5xx_ll_bus.h"
 #include "stm32l5xx_ll_cortex.h"
@@ -73,8 +72,6 @@ void Error_Handler(void);
 #define USER_BUTTON_GPIO_Port GPIOC
 #define VBUS_SENSE_Pin GPIO_PIN_2
 #define VBUS_SENSE_GPIO_Port GPIOC
-#define CSB_Pin GPIO_PIN_5
-#define CSB_GPIO_Port GPIOA
 #define UCPD_FLT_Pin GPIO_PIN_14
 #define UCPD_FLT_GPIO_Port GPIOB
 #define ST_LINK_VCP_TX_Pin GPIO_PIN_7

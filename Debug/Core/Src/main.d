@@ -48,11 +48,7 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
  ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_ll_dma.h \
  ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_ll_dmamux.h \
  ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_ll_exti.h \
- ../Core/Inc/adc.h ../Core/Inc/main.h ../Core/Inc/i2c.h \
- ../Core/Inc/usart.h ../Core/Inc/rtc.h ../Core/Inc/ucpd.h \
- ../Core/Inc/usb.h ../Core/Inc/gpio.h ../Core/Inc/LOS_D_BMX160.hpp \
- ../Core/Inc/LOS_D_IMU.hpp ../Core/Inc/i2c.h \
- ../Core/Inc/LOS_D_SF_CommonDataTypes.hpp ../Core/Inc/LOS_D_IMU.hpp
+ ../Core/Inc/GPS.hpp ../Core/Inc/NMEAparse.h ../Core/Inc/main.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_hal.h:
 ../Core/Inc/stm32l5xx_hal_conf.h:
@@ -103,16 +99,6 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
 ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_ll_dma.h:
 ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_ll_dmamux.h:
 ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_ll_exti.h:
-../Core/Inc/adc.h:
+../Core/Inc/GPS.hpp:
+../Core/Inc/NMEAparse.h:
 ../Core/Inc/main.h:
-../Core/Inc/i2c.h:
-../Core/Inc/usart.h:
-../Core/Inc/rtc.h:
-../Core/Inc/ucpd.h:
-../Core/Inc/usb.h:
-../Core/Inc/gpio.h:
-../Core/Inc/LOS_D_BMX160.hpp:
-../Core/Inc/LOS_D_IMU.hpp:
-../Core/Inc/i2c.h:
-../Core/Inc/LOS_D_SF_CommonDataTypes.hpp:
-../Core/Inc/LOS_D_IMU.hpp:

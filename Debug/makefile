@@ -49,34 +49,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := BMXtest
+BUILD_ARTIFACT_NAME := Neo_M8_part2
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-BMXtest.elf \
+Neo_M8_part2.elf \
 
 MAP_FILES += \
-BMXtest.map \
+Neo_M8_part2.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-BMXtest.list \
+Neo_M8_part2.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: BMXtest.elf secondary-outputs
+main-build: Neo_M8_part2.elf secondary-outputs
 
 # Tool invocations
-BMXtest.elf BMXtest.map: $(OBJS) $(USER_OBJS) C:\Users\Nolan\STM32CubeIDE\workspace_1.12.1\BMXtest\STM32L552ZETXQ_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "BMXtest.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m33 -T"C:\Users\Nolan\STM32CubeIDE\workspace_1.12.1\BMXtest\STM32L552ZETXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="BMXtest.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Neo_M8_part2.elf Neo_M8_part2.map: $(OBJS) $(USER_OBJS) C:\Users\Nolan\STM32CubeIDE\workspace_1.12.1\Neo_M8_part2\STM32L552ZETXQ_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "Neo_M8_part2.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m33 -T"C:\Users\Nolan\STM32CubeIDE\workspace_1.12.1\Neo_M8_part2\STM32L552ZETXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="Neo_M8_part2.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -85,14 +85,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-BMXtest.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "BMXtest.list"
+Neo_M8_part2.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Neo_M8_part2.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) BMXtest.elf BMXtest.list BMXtest.map default.size.stdout
+	-$(RM) Neo_M8_part2.elf Neo_M8_part2.list Neo_M8_part2.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
