@@ -19,6 +19,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "GPS.hpp"
+#include "cstring"
+#include <cstdarg>
+#include "stdio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -65,6 +68,7 @@ static void MX_UCPD1_Init(void);
 static void MX_USB_PCD_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_USART2_UART_Init(void);
+void myprintf(const char *fmt, ...);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -121,8 +125,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_UART_Receive_DMA(&huart2, NewGPS.rx_raw, 100);
-	  //NewGPS.getGPS(MyGPS);
+	  NewGPS.getGPS(MyGPS);
+	  myprintf("lat/long: %d, %d\r\n", (int)MyGPS.ggastruct.lcation.latitude, (int)MyGPS.ggastruct.lcation.longitude);
+	  //HAL_UART_Receive_DMA(&huart2, NewGPS.rx_raw, 1000);
 	  HAL_Delay(1000);
   }
   /* USER CODE END 3 */
@@ -184,6 +189,17 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+void myprintf(const char *fmt, ...) {
+  static char buffer[256];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buffer, sizeof(buffer), fmt, args);
+  va_end(args);
+
+  int len = strlen(buffer);
+  HAL_UART_Transmit(&hlpuart1, (uint8_t*)buffer, len, -1);
 }
 
 /**
