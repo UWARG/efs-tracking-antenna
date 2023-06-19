@@ -1,0 +1,17 @@
+LOS_D_BMX160.cpp:110:6:void BMX160::configAcc()	1
+LOS_D_BMX160.cpp:118:6:void BMX160::configGyro()	1
+LOS_D_BMX160.cpp:126:6:void BMX160::configMag()	1
+LOS_D_BMX160.cpp:157:6:bool BMX160::selfTestAcc()	4
+LOS_D_BMX160.cpp:204:6:bool BMX160::selfTestGyro()	2
+LOS_D_BMX160.cpp:214:6:bool BMX160::selfTestMag()	1
+LOS_D_BMX160.cpp:234:6:bool BMX160::scan()	2
+LOS_D_BMX160.cpp:242:6:void BMX160::calibrate()	2
+LOS_D_BMX160.cpp:293:9:static BMX160& BMX160::getInstance()	3
+LOS_D_BMX160.cpp:298:6:void BMX160::updateData()	1
+LOS_D_BMX160.cpp:303:6:virtual void BMX160::GetResult(IMUData_t&)	1
+LOS_D_IMU.hpp:25:7:constexpr IMU::IMU()	1
+LOS_D_BMX160.cpp:330:1:BMX160::BMX160()	1
+LOS_D_BMX160.cpp:336:6:void BMX160::IMUInit()	2
+LOS_D_BMX160.cpp:354:6:void BMX160::setAccPowerModeToNormal()	1
+LOS_D_BMX160.cpp:360:6:void BMX160::setMagPowerModeToNormal()	1
+LOS_D_BMX160.cpp:367:6:void BMX160::setAllPowerModesToNormal()	1
