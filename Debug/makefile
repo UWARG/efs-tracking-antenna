@@ -9,7 +9,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
+-include Drivers/STM32L5xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
@@ -49,34 +49,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := MavlinkPassthrough
+BUILD_ARTIFACT_NAME := Tracking_Antenna
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-MavlinkPassthrough.elf \
+Tracking_Antenna.elf \
 
 MAP_FILES += \
-MavlinkPassthrough.map \
+Tracking_Antenna.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-MavlinkPassthrough.list \
+Tracking_Antenna.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: MavlinkPassthrough.elf secondary-outputs
+main-build: Tracking_Antenna.elf secondary-outputs
 
 # Tool invocations
-MavlinkPassthrough.elf MavlinkPassthrough.map: $(OBJS) $(USER_OBJS) C:\Users\Nolan\STM32CubeIDE\workspace_1.12.1\MavlinkPassthrough\STM32F401RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "MavlinkPassthrough.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Nolan\STM32CubeIDE\workspace_1.12.1\MavlinkPassthrough\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MavlinkPassthrough.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Tracking_Antenna.elf Tracking_Antenna.map: $(OBJS) $(USER_OBJS) C:\Users\Nolan\STM32CubeIDE\workspace_1.12.1\Tracking_Antenna\STM32L552ZETXQ_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "Tracking_Antenna.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m33 -T"C:\Users\Nolan\STM32CubeIDE\workspace_1.12.1\Tracking_Antenna\STM32L552ZETXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="Tracking_Antenna.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -85,14 +85,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-MavlinkPassthrough.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "MavlinkPassthrough.list"
+Tracking_Antenna.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Tracking_Antenna.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) MavlinkPassthrough.elf MavlinkPassthrough.list MavlinkPassthrough.map default.size.stdout
+	-$(RM) Tracking_Antenna.elf Tracking_Antenna.list Tracking_Antenna.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
