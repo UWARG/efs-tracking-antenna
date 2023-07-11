@@ -1,0 +1,3 @@
+stm32l5xx_ll_bus.h:433:22:LL_AHB2_GRP1_EnableClock	1
+stm32l5xx_ll_bus.h:914:22:LL_APB1_GRP2_EnableClock	1
+ucpd.c:28:6:MX_UCPD1_Init	1

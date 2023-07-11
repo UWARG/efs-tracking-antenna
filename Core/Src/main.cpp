@@ -18,14 +18,21 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
+#include "i2c.h"
 #include "usart.h"
+#include "rtc.h"
+#include "ucpd.h"
+#include "usb.h"
 #include "gpio.h"
+#include "LOS_D_BMX160.hpp"
+#include "LOS_D_IMU.hpp"
+#include "GPS.hpp"
+#include "DMA.h"
 #include "CommonDataTypes.hpp"
-#include "dma.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -88,9 +95,16 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_USART2_UART_Init();
   MX_DMA_Init();
-  MX_USART6_UART_Init();
+  MX_LPUART1_UART_Init();
+  MX_RTC_Init();
+  MX_UCPD1_Init();
+  MX_USB_PCD_Init();
+  MX_UART5_Init();
+  MX_USART2_UART_Init();
+  MX_USART3_UART_Init();
+  MX_ADC1_Init();
+  MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -102,18 +116,18 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-//	  mavlink_message_t upstreamMessage;
-//	  bool upmessageRead = drone_mavlink->readMessage(upstreamMessage);
-//	  if(upmessageRead){
-//		  antenna_mavlink->writeMessage(upstreamMessage);
-//	  }
-//
-//	  mavlink_message_t downstreamMessage;
-//	  bool downmessageRead = antenna_mavlink->readMessage(downstreamMessage);
-//	  if(downmessageRead){
-//		  drone_mavlink->writeMessage(downstreamMessage);
-//	  }
-	  HAL_UART_Receive_DMA(&huart2, rx_raw, 100);
+	mavlink_message_t upstreamMessage;
+	bool upmessageRead = drone_mavlink->readMessage(upstreamMessage);
+	if(upmessageRead){
+	  	antenna_mavlink->writeMessage(upstreamMessage);
+	}
+
+	mavlink_message_t downstreamMessage;
+	bool downmessageRead = antenna_mavlink->readMessage(downstreamMessage);
+	if(downmessageRead){
+	  	drone_mavlink->writeMessage(downstreamMessage);
+	}
+	HAL_UART_Receive_DMA(&huart2, rx_raw, 100);
 
   }
   /* USER CODE END 3 */
@@ -130,21 +144,33 @@ void SystemClock_Config(void)
 
   /** Configure the main internal regulator output voltage
   */
-  __HAL_RCC_PWR_CLK_ENABLE();
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
+  if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure LSE Drive Capability
+  */
+  HAL_PWR_EnableBkUpAccess();
+  __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_LOW);
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48|RCC_OSCILLATORTYPE_LSE
+                              |RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
+  RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
+  RCC_OscInitStruct.MSIState = RCC_MSI_ON;
+  RCC_OscInitStruct.MSICalibrationValue = RCC_MSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 16;
-  RCC_OscInitStruct.PLL.PLLN = 336;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
-  RCC_OscInitStruct.PLL.PLLQ = 7;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
+  RCC_OscInitStruct.PLL.PLLM = 1;
+  RCC_OscInitStruct.PLL.PLLN = 55;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
+  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -156,10 +182,10 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
   {
     Error_Handler();
   }

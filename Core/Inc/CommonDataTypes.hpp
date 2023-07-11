@@ -9,8 +9,8 @@
     UART Mapping
 */
 
-#define drone_mavlink_uart    &huart2
-#define antenna_mavlink_uart     &huart6
+#define drone_mavlink_uart    &huart3
+#define antenna_mavlink_uart     &huart2
 
 /*
     MAVlink Instances

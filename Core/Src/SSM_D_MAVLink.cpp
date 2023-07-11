@@ -25,7 +25,7 @@ bool MAVLink::readMessage(mavlink_message_t& message)
 {
     //if Data Reception process is not ongoing, then activate it
     if(uart_->RxState != HAL_UART_STATE_BUSY_RX){
-        HAL_UART_Receive_DMA(uart_, raw_rx_msg_, sizeof(raw_rx_msg_));
+    	HAL_UARTEx_ReceiveToIdle_DMA(uart_, raw_rx_msg_, sizeof(raw_rx_msg_));
     }
 
     uint8_t byte = 0;
