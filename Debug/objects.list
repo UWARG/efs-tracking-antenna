@@ -6,6 +6,7 @@
 "./Core/Src/SSM_D_MAVLink.o"
 "./Core/Src/adc.o"
 "./Core/Src/callback_organize.o"
+"./Core/Src/dma.o"
 "./Core/Src/gpio.o"
 "./Core/Src/i2c.o"
 "./Core/Src/main.o"

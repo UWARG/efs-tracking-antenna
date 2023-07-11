@@ -1,6 +1,6 @@
 
 #include "SSM_D_MAVLink.hpp"
-#include "../Inc/CommonDataTypes.hpp"
+#include "CommonDataTypes.hpp"
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size){
     

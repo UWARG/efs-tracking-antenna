@@ -361,9 +361,8 @@ Core/Src/callback_organize.o: ../Core/Src/callback_organize.cpp \
  ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_ll_dma.h \
  ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_ll_dmamux.h \
  ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_ll_exti.h \
- ../Core/Inc/CircularBuffer.hpp ../Core/Src/../Inc/CommonDataTypes.hpp \
- ../Core/Src/../Inc/main.h ../Core/Src/../Inc/usart.h \
- ../Core/Src/../Inc/SSM_D_MAVLink.hpp
+ ../Core/Inc/CircularBuffer.hpp ../Core/Inc/CommonDataTypes.hpp \
+ ../Core/Inc/usart.h ../Core/Inc/SSM_D_MAVLink.hpp
 ../Core/Inc/SSM_D_MAVLink.hpp:
 ../Core/Inc/MAVLink/ardupilotmega/mavlink.h:
 ../Core/Inc/MAVLink/ardupilotmega/version.h:
@@ -728,7 +727,6 @@ Core/Src/callback_organize.o: ../Core/Src/callback_organize.cpp \
 ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_ll_dmamux.h:
 ../Drivers/STM32L5xx_HAL_Driver/Inc/stm32l5xx_ll_exti.h:
 ../Core/Inc/CircularBuffer.hpp:
-../Core/Src/../Inc/CommonDataTypes.hpp:
-../Core/Src/../Inc/main.h:
-../Core/Src/../Inc/usart.h:
-../Core/Src/../Inc/SSM_D_MAVLink.hpp:
+../Core/Inc/CommonDataTypes.hpp:
+../Core/Inc/usart.h:
+../Core/Inc/SSM_D_MAVLink.hpp:
