@@ -15,6 +15,7 @@ MAG_IF_0 {
 #define MAG_IF_2 0X4E //mag write addr
 #define MAG_IF_3 0x4F //mag write data
 
+//time increment 39 micro secs
 #define SENSORTIME_0 0X18 //<7:0> sensor time
 #define SENSORTIME_1 0X19 //<15:8> sensor time
 #define SENSORTIME_2 0X1A //23:16> sensor time
