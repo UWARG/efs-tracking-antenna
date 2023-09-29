@@ -13,8 +13,8 @@ void I2C_RxHandler(int numBytes) {
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  Wire.begin(0X4C| 0X4D| 0X4E| 0X4F);
-  Wire.onReceive(I2C_RxHandler);
+  Wire.begin(0X4C| 0X4D| 0X4E| 0X4F);//accept multiple address
+  Wire.onReceive(I2C_RxHandler);//once the interrupt is triggered, call the function
 }
 
 void loop() {
