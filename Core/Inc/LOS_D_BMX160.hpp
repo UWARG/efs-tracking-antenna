@@ -1,7 +1,15 @@
 #ifndef INC_BMX160_HPP_
 #define INC_BMX160_HPP_
 
+#include "main.h"
+#include "i2c.h"
+
 /*----hardware indirect addressing-----*/
+#define BMX160_DEVICE_ID   (0B1101000 << 1)
+/*I2C driver address is left aligned
+  LSB is reserved for R/W operation*/
+
+
 #define MAG_IF_0 0X4C
 /*
 MAG_IF_0 {
@@ -29,7 +37,7 @@ MAG_IF_0 {
 #define MAG_Z_0 0X08 //<7:0>
 #define MAG_Z_1 0X09 //<15:0>
 
-#define NULL 0X00
+#define _NULL 0X00
 
 typedef struct {
   uint32_t MAG_X;
@@ -47,16 +55,18 @@ class BMX160{
       return ((_31_24 << 24) | (_23_16 << 16) | (_15_8 << 8) | (_7_0));
     }
 
-    void I2C_Write(uint16_t addr, uint8_t *p_data) {
-      HAL_I2C_Master_Transmit(HI2C, addr, p_data, 300);
+    void Mem_Write(uint16_t mem_addr, uint16_t mem_size, uint8_t *p_data, uint16_t size) {
+      HAL_I2C_Mem_Write(HI2C, BMX160_DEVICE_ID, mem_addr, mem_size, p_data, size, (uint32_t)300);
     }
 
-    void I2C_Read(uint16_t addr, uint8_t *p_data, uint16_t size) {
-      HAL_I2C_Master_Recieve(HI2C, addr, p_data, size, 300);
+    void Mem_Read(uint16_t mem_addr, uint16_t mem_size, uint8_t *p_data, uint16_t size) {
+      HAL_I2C_Mem_Read(HI2C, BMX160_DEVICE_ID, mem_addr, mem_size, p_data, size, (uint32_t)300);
+      //1 need to use i2c mem_write
+      //need to import 1101000 << 1 left align as device id
     }
 
     I2C_HandleTypeDef *HI2C;
-}
+};
 
 
 #endif /* INC_BMX160_HPP_ */
