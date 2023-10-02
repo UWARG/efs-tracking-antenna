@@ -61,8 +61,7 @@ class BMX160{
 
     void Mem_Read(uint16_t mem_addr, uint16_t mem_size, uint8_t *p_data, uint16_t size) {
       HAL_I2C_Mem_Read(HI2C, BMX160_DEVICE_ID, mem_addr, mem_size, p_data, size, (uint32_t)300);
-      //1 need to use i2c mem_write
-      //need to import 1101000 << 1 left align as device id
+      //see if possible add a macro to auto fetch mem_size and data_size
     }
 
     I2C_HandleTypeDef *HI2C;
