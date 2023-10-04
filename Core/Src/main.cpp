@@ -25,14 +25,15 @@
 #include "ucpd.h"
 #include "usb.h"
 #include "gpio.h"
-#include "LOS_D_BMX160.hpp"
-#include "LOS_D_IMU.hpp"
-#include "GPS.hpp"
 #include "DMA.h"
-#include "CommonDataTypes.hpp"
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "BMX160.h"
+#include "GPS.h"
+#include "MAVLink.h"
+#include "CommonDataTypes.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -83,7 +84,6 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  uint8_t rx_raw[100];
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -116,19 +116,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	mavlink_message_t upstreamMessage;
-	bool upmessageRead = drone_mavlink->readMessage(upstreamMessage);
-	if(upmessageRead){
-	  	antenna_mavlink->writeMessage(upstreamMessage);
-	}
-
-	mavlink_message_t downstreamMessage;
-	bool downmessageRead = antenna_mavlink->readMessage(downstreamMessage);
-	if(downmessageRead){
-	  	drone_mavlink->writeMessage(downstreamMessage);
-	}
-	HAL_UART_Receive_DMA(&huart2, rx_raw, 100);
-
   }
   /* USER CODE END 3 */
 }

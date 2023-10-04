@@ -1,3 +1,0 @@
-../Core/Src/callback_organize.cpp:5:6:void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef*, uint16_t)	24	static
-../Core/Src/callback_organize.cpp:32:7:void HAL_UART_RxCpltCallback(UART_HandleTypeDef*)	24	static
-../Core/Src/callback_organize.cpp:58:7:void HAL_UART_ErrorCallback(UART_HandleTypeDef*)	16	static
