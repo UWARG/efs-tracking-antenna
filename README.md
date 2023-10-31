@@ -2,11 +2,12 @@ To-do:
 the file structure for this project will be the following
 
 - Core
-	- IMU public interface
-	- GPS public interface
-	- servo public interface(angle based)
-	- Mavlink public interface
-	- Tracking algorithm public interface
+  	-Inc
+		- IMU public interface
+		- GPS public interface
+		- servo public interface(angle based)
+		- Mavlink public interface
+		- Tracking algorithm public interface
 
 - Mavlink
 	- mission planner simulator support(python)
