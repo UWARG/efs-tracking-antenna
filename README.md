@@ -20,18 +20,18 @@ the file structure for this project will be the following
 
 
 Pin definition for the board:
-ADC_IN3: ADC input reserved for current sensing
+- ADC_IN3: ADC input reserved for current sensing
 	- PC2
-UART3: Mavlink communication(either to simulator or to airside)
+- UART3: Mavlink communication(either to simulator or to airside)
 	- PB10 TX
 	- PB11 RX
-UART5: NEO_M8 UART port
+- UART5: NEO_M8 UART port
 	- PD2 RX
 	- PC12 TX
-I2C2: BMX driver
+- I2C2: BMX driver
 	- PF0 SDA(need pull-up)
 	- PF1 CLK(need pull-up)
-TIM1 CH1: Yaw PWM
+- TIM1 CH1: Yaw PWM
 	- PE9
-TIM1 CH2: Pitch PWM
+- TIM1 CH2: Pitch PWM
 	- PE11
