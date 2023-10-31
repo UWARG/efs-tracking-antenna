@@ -29,18 +29,6 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l5xx_hal.h"
 
-#include "stm32l5xx_ll_ucpd.h"
-#include "stm32l5xx_ll_bus.h"
-#include "stm32l5xx_ll_cortex.h"
-#include "stm32l5xx_ll_rcc.h"
-#include "stm32l5xx_ll_system.h"
-#include "stm32l5xx_ll_utils.h"
-#include "stm32l5xx_ll_pwr.h"
-#include "stm32l5xx_ll_gpio.h"
-#include "stm32l5xx_ll_dma.h"
-
-#include "stm32l5xx_ll_exti.h"
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -71,10 +59,20 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define USER_BUTTON_Pin GPIO_PIN_13
 #define USER_BUTTON_GPIO_Port GPIOC
+#define BMX_Data_Pin GPIO_PIN_0
+#define BMX_Data_GPIO_Port GPIOF
+#define BMX_Clock_Pin GPIO_PIN_1
+#define BMX_Clock_GPIO_Port GPIOF
 #define VBUS_SENSE_Pin GPIO_PIN_2
 #define VBUS_SENSE_GPIO_Port GPIOC
-#define UCPD_FLT_Pin GPIO_PIN_14
-#define UCPD_FLT_GPIO_Port GPIOB
+#define YAW_PWM_Pin GPIO_PIN_9
+#define YAW_PWM_GPIO_Port GPIOE
+#define PITCH_PWM_Pin GPIO_PIN_11
+#define PITCH_PWM_GPIO_Port GPIOE
+#define Mavlink_TX_Pin GPIO_PIN_10
+#define Mavlink_TX_GPIO_Port GPIOB
+#define MAVLINK_RX_Pin GPIO_PIN_11
+#define MAVLINK_RX_GPIO_Port GPIOB
 #define ST_LINK_VCP_TX_Pin GPIO_PIN_7
 #define ST_LINK_VCP_TX_GPIO_Port GPIOG
 #define ST_LINK_VCP_RX_Pin GPIO_PIN_8
@@ -83,8 +81,10 @@ void Error_Handler(void);
 #define LED_GREEN_GPIO_Port GPIOC
 #define LED_RED_Pin GPIO_PIN_9
 #define LED_RED_GPIO_Port GPIOA
-#define UCPD_DBN_Pin GPIO_PIN_5
-#define UCPD_DBN_GPIO_Port GPIOB
+#define NEOM8_TX_Pin GPIO_PIN_12
+#define NEOM8_TX_GPIO_Port GPIOC
+#define NEOM8_RX_Pin GPIO_PIN_2
+#define NEOM8_RX_GPIO_Port GPIOD
 #define LED_BLUE_Pin GPIO_PIN_7
 #define LED_BLUE_GPIO_Port GPIOB
 
