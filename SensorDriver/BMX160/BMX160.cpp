@@ -1,1 +1,1 @@
-#include <BMX160.cpp>
+#include <BMX160.h>
