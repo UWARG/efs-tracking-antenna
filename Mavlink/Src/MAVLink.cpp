@@ -5,7 +5,7 @@
  *
  */
 
-#include "../Inc/MAVLink.h"
+#include "../Inc/SSM_D_MAVLink.h"
 
 MAVLink::MAVLink(UART_HandleTypeDef* uart_handle) : uart_(uart_handle)
 {

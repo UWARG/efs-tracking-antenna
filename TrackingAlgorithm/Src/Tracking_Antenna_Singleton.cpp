@@ -81,18 +81,18 @@ class trackingAntenna
       return yaw_and_pitch_rot_string + "\n";
     }
 };
-//
-//trackingAntenna *trackingAntenna ::instance_ptr = new trackingAntenna();
 
-//int main()
-//{
-//  double lat_1 = 54.9967051; //just for testing
-//  double lat_2 = 55.0530773;
-//  double long_1 = -61.415482;
-//  double long_2 = -61.706192;
-//  double alt_1 = 0;
-//  double alt_2 = 0.12;
-//  trackingAntenna *antenna
-//      = trackingAntenna ::getInstance();
-//  std::cout << antenna->getYawAndPitch(lat_1, long_1, alt_1, lat_2, long_2, alt_2);
-//}
+trackingAntenna *trackingAntenna ::instance_ptr = new trackingAntenna();
+
+int main()
+{
+  double lat_1 = 54.9967051; //just for testing
+  double lat_2 = 55.0530773;
+  double long_1 = -61.415482;
+  double long_2 = -61.706192;
+  double alt_1 = 0;
+  double alt_2 = 0.12;
+  trackingAntenna *antenna
+      = trackingAntenna ::getInstance();
+  std::cout << antenna->getYawAndPitch(lat_1, long_1, alt_1, lat_2, long_2, alt_2);
+}

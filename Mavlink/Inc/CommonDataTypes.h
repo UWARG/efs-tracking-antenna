@@ -14,7 +14,7 @@
 */
 
 #define drone_mavlink_uart    &huart3
-#define antenna_mavlink_uart     &huart5
+#define antenna_mavlink_uart     &huart2
 
 
 extern MAVLink* drone_mavlink;
