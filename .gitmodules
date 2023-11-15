@@ -1,0 +1,3 @@
+[submodule "SensorDriver/BMX160/BMI_Driver"]
+	path = SensorDriver/BMX160/BMI_Driver
+	url = https://github.com/boschsensortec/BMI160_driver.git
