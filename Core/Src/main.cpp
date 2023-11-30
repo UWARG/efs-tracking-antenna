@@ -19,13 +19,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "dma.h"
 #include "i2c.h"
 #include "usart.h"
-#include "rtc.h"
-#include "ucpd.h"
-#include "usb.h"
+#include "tim.h"
 #include "gpio.h"
-#include "DMA.h"
 
 
 /* Private includes ----------------------------------------------------------*/
@@ -34,6 +32,7 @@
 #include "GPS.h"
 #include "MAVLink.h"
 #include "CommonDataTypes.h"
+#include "LOS_D_VN300.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,22 +96,22 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_LPUART1_UART_Init();
-  MX_RTC_Init();
-  MX_UCPD1_Init();
-  MX_USB_PCD_Init();
   MX_UART5_Init();
-  MX_USART2_UART_Init();
   MX_USART3_UART_Init();
   MX_ADC1_Init();
   MX_I2C2_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-
+  UnifiedSensor* gps = &VN300::getInstance();
+  USData_t data = {};
+  data.req_data.imu = 1;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    gps->GetResult(data);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
