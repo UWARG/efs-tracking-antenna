@@ -236,7 +236,9 @@ int yawAngleCalc(int bearing) {
 
 void loop() {
   readPos();
-  //to-do: set aat_lat and aat_lon before entering the loop(based on the ne m8 input)
+  //to-do:
+  // 1. test at sunny days GPS data are updated successfully
+  // 2. import bmx160 code as a library ad call in this file
   dist = calcGPSDist(AAT_LAT, AAT_LON, vehicle_lat, vehicle_lon);
   bear = calculateBearing(AAT_LAT, AAT_LON, vehicle_lat, vehicle_lon);
   setPitchAngle(pitchAngleCalc(dist, vehicle_alt));
