@@ -1,23 +1,6 @@
 #include "src/c_library_v2/ardupilotmega/mavlink.h"
-#include "src/c_library_v2/IMU.h"
-#include "src/c_library_v2/Adafruit_Sensor-master/Adafruit_Sensor.h"
-#include "src/c_library_v2/DPEng_BMX160/DPEng_BMX160.h"
-#include "src/c_library_v2/DPEng_BMX160/Mahony_BMX160.h"
-#include "src/c_library_v2/SparkFun_u-blox_GNSS_Arduino_Library/SparkFun_u-blox_GNSS_Arduino_Library.h"
-
-#include <Wire.h>
 #include <math.h>
 #include <Servo.h>
-#include <SoftwareSerial.h>
-
-SoftwareSerial mySerial(2, 3); // RX, TX. Pin 10 on Uno goes to TX pin on GNSS module.
-DPEng_BMX160 dpEng = DPEng_BMX160(0x160A, 0x160B, 0x160C);
-Mahony_BMX160 filter;
-
-SFE_UBLOX_GNSS myGNSS;
-
-long lastTime = 0; //Simple local timer. Limits amount of I2C traffic to u-blox module.
-
 
 Servo pitchL;
 Servo pitchR;
@@ -28,7 +11,8 @@ Servo yaw;
 #define RADIANS PI / 180
 
 //SET INITIAL ANTENNA TRACKER LOCATION AND BEARING
-float AAT_LAT = 5.0, AAT_LON = 5.0;
+#define AAT_LAT 43.473335
+#define AAT_LON -80.567070
 #define AAT_BEARING 270
 
 float vehicle_lat;
@@ -48,16 +32,6 @@ double point_dist;
 //YAW 0 DEG: 1500
 //YAW 85 DEG RIGHT: 600
 //YAW 85 DEG LEFT: 2400
-
-void set_starting_gps() {
-  //Query module only every second. Doing it more often will just cause I2C traffic.
-  //The module only responds when a new position is available
-  delay(1000);
-  
-  AAT_LAT = myGNSS.getLatitude();
-
-  AAT_LON = myGNSS.getLongitude();
-}
 
 // Function to set the pitch angle of the tracker in degrees
 void setPitchAngle(float angle) {
@@ -95,31 +69,6 @@ void setup() {
   // Start serial interfaces
   Serial.begin(115200); // USB for serial monitor
   Serial1.begin(57600);  // UART for MAVLink
-  
-  mySerial.begin(9600);
-  while(true) { 
-    if (myGNSS.begin(mySerial) == true) {
-        Serial.println("GNSS: connected at 9600 baud");
-        break;
-    } else {
-      Serial.println("GNSS: retry connection");
-    }
-  }
-  Serial.println("GNSS serial connected");
-
-  myGNSS.setUART1Output(COM_TYPE_UBX); //Set the UART port to output UBX only
-  myGNSS.setI2COutput(COM_TYPE_UBX); //Set the I2C port to output UBX only (turn off NMEA noise)
-  myGNSS.saveConfiguration(); //Save the current settings to flash and BBR
-
-  set_starting_gps();
-
-  if(!dpEng.begin(BMX160_ACCELRANGE_4G, GYRO_RANGE_250DPS))
-  {
-    Serial.println("Ooops, no IMU detected ... Check your wiring!");
-    while(1);
-  }
-
-  filter.begin();
 }
 
 double toRadians(double degrees) {
@@ -205,9 +154,9 @@ int yawAngleCalc(int bearing) {
   float lowerLimit;
   int out;
   out = map(bearing, 0, upperLimit, -85, 85);
-  //float og_bearing = bearing;
-  //bool rollOverRight = false;
-  /*
+  float og_bearing = bearing;
+  bool rollOverRight = false;
+  
   if (AAT_BEARING > 180) {
     if (bearing < AAT_BEARING - 85) {
       bearing = bearing + 360;
@@ -227,7 +176,7 @@ int yawAngleCalc(int bearing) {
   if (og_bearing > upperLimit) {
     out = 85;
   }
-  */
+  
   bearing = (bearing + 360) % 360;
 
   int rawDifference = bearing - AAT_BEARING;
@@ -251,61 +200,27 @@ int yawAngleCalc(int bearing) {
 
 void loop() {
   readPos();
-  //to-do:
-  // 1. test at sunny days GPS data are updated successfully
-    sensors_event_t accel_event;
-  sensors_event_t gyro_event;
-  sensors_event_t mag_event; 
-
-  dpEng.getEvent(&accel_event, &gyro_event, &mag_event);
-
-  mag_refine(mag_event);
-
-  filter.update(gyro_event.gyro.x, gyro_event.gyro.y, gyro_event.gyro.z, // GYRO DATA
-              accel_event.acceleration.x, accel_event.acceleration.y, accel_event.acceleration.z, // ACCEL DATA
-              mag_data[0], mag_data[1], mag_data[2], // MAG DATA
-              mag_event.timestamp);
-      
-  float roll = filter.getRoll();
-  float pitch = filter.getPitch();
-  float heading = filter.getYaw() + mag_decl;
-
-
-
-  Serial.print(millis());
-  Serial.print(" - Orientation: ");
-  Serial.print(heading);
-  Serial.print(" ");
-  Serial.print(pitch);
-  Serial.print(" ");
-  Serial.println(roll);
-  // 2. import bmx160 code as a library ad call in this file
-  // dist = calcGPSDist(AAT_LAT, AAT_LON, vehicle_lat, vehicle_lon);
-  // bear = calculateBearing(AAT_LAT, AAT_LON, vehicle_lat, vehicle_lon);
-  // setPitchAngle(pitchAngleCalc(dist, vehicle_alt));
-  // setYawAngle(yawAngleCalc(bear));
-  // Serial.print("Latitude: ");
-  // Serial.println(vehicle_lat, 6);
-  // Serial.print("Longitude: ");
-  // Serial.println(vehicle_lon, 6);
-  // Serial.print("Altitude: ");
-  // Serial.println(vehicle_alt, 2);
-  // Serial.print("AAT LAT: ");
-  // Serial.println(AAT_LAT);
-  // Serial.print("AAT LON: ");
-  // Serial.println(AAT_LON);
-  // Serial.print("Dist: ");
-  // Serial.println(dist, 2);
-  // Serial.print("Bearing: ");
-  // Serial.println(bear, 2);
-  // Serial.print("AAT Pitch: ");
-  // Serial.println(pitchAngleCalc(dist, vehicle_alt));
-  // Serial.print("AAT Yaw: ");
-  // Serial.println(yawAngleCalc(bear));
-  // Serial.print("Incremental: ");
-  // Serial.println(inc);
-  // inc = inc+1;
-  // Serial.print("\n");
-  
+  dist = calcGPSDist(AAT_LAT, AAT_LON, vehicle_lat, vehicle_lon);
+  bear = calculateBearing(AAT_LAT, AAT_LON, vehicle_lat, vehicle_lon);
+  setPitchAngle(pitchAngleCalc(dist, vehicle_alt));
+  setYawAngle(yawAngleCalc(bear));
+  Serial.print("Latitude: ");
+  Serial.println(vehicle_lat, 6);
+  Serial.print("Longitude: ");
+  Serial.println(vehicle_lon, 6);
+  Serial.print("Altitude: ");
+  Serial.println(vehicle_alt, 2);
+  Serial.print("Dist: ");
+  Serial.println(dist, 2);
+  Serial.print("Bearing: ");
+  Serial.println(bear, 2);
+  Serial.print("AAT Pitch: ");
+  Serial.println(pitchAngleCalc(dist, vehicle_alt));
+  Serial.print("AAT Yaw: ");
+  Serial.println(yawAngleCalc(bear));
+  Serial.print("Incremental: ");
+  Serial.println(inc);
+  inc = inc+1;
+  Serial.print("\n");
   delay(200);
 }
