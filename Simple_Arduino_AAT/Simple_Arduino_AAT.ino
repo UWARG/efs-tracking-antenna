@@ -1,7 +1,7 @@
 #include "src/c_library_v2/ardupilotmega/mavlink.h"
 #include <math.h>
 #include <Servo.h>
-#include <SparkFun_u-blox_GNSS_Arduino_Library.h>
+#include "src/c_library_v2/SparkFun_u-blox_GNSS_Arduino_Library/SparkFun_u-blox_GNSS_Arduino_Library.h"
 #include <SoftwareSerial.h>
 
 
@@ -17,7 +17,8 @@ Servo yaw;
 #define RADIANS PI / 180
 #define AAT_BEARING 270
 
-static float AAT_LAT, AAT_LON = 0;
+static float AAT_LAT = 43.473835;
+static float AAT_LON = -80.540833;
 static float vehicle_lat;
 static float vehicle_lon;
 static float vehicle_alt;
@@ -29,14 +30,14 @@ static double haversine;
 static double temp;
 static double point_dist;
 
-void set_starting_gps() {
-  //Query module only every second. Doing it more often will just cause I2C traffic.
-  //The module only responds when a new position is available
-  delay(1000);
+// void set_starting_gps() {
+//   //Query module only every second. Doing it more often will just cause I2C traffic.
+//   //The module only responds when a new position is available
+//   delay(1000);
   
-  AAT_LAT = myGNSS.getLatitude();
-  AAT_LON = myGNSS.getLongitude();
-}
+//   AAT_LAT = myGNSS.getLatitude();
+//   AAT_LON = myGNSS.getLongitude();
+// }
 
 // Function to set the pitch angle of the tracker in degrees
 void setPitchAngle(float angle) {
@@ -64,10 +65,6 @@ void setup() {
   pitchR.attach(9); // Right pitch servo
   yaw.attach(8); // Yaw servo
 
-  // Set initial angles
-  setYawAngle(0);
-  setPitchAngle(45);
-
   // Start serial interfaces
   Serial.begin(115200); // USB for serial monitor
   Serial1.begin(57600);  // UART for MAVLink
@@ -86,7 +83,7 @@ void setup() {
   myGNSS.setI2COutput(COM_TYPE_UBX); //Set the I2C port to output UBX only (turn off NMEA noise)
   myGNSS.saveConfiguration(); //Save the current settings to flash and BBR
 
-  set_starting_gps();
+  // set_starting_gps();
 }
 
 double toRadians(double degrees) {
@@ -217,14 +214,19 @@ int yawAngleCalc(int bearing) {
 }
 
 void loop() {
+  // set_starting_gps();
   readPos();
   dist = calcGPSDist(AAT_LAT, AAT_LON, vehicle_lat, vehicle_lon);
   bear = calculateBearing(AAT_LAT, AAT_LON, vehicle_lat, vehicle_lon);
   setPitchAngle(pitchAngleCalc(dist, vehicle_alt));
   setYawAngle(yawAngleCalc(bear));
   Serial.print("Latitude: ");
+  Serial.println(AAT_LAT, 6);
+  Serial.print("Drone Latitude: ");
   Serial.println(vehicle_lat, 6);
   Serial.print("Longitude: ");
+  Serial.println(AAT_LON, 6);
+  Serial.print("Drone Longitude: ");
   Serial.println(vehicle_lon, 6);
   Serial.print("Altitude: ");
   Serial.println(vehicle_alt, 2);
