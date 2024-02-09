@@ -47,8 +47,8 @@ void set_starting_gps() {
 
   AAT_LAT = myGNSS.getLatitude()/10000000.0;
   AAT_LON = myGNSS.getLongitude()/10000000.0;
-  Serial.print(F("Lon: "));
-  Serial.print(AAT_LON);
+  Serial.print(F("SIV: "));
+  Serial.print(myGNSS.getSIV());
   //AAT_ALT Not implemented assume 0 
   //  AAT_ALT = myGNSS.getAltitude()/100000;
   //  Serial.print(F("ALT: "));
@@ -92,7 +92,7 @@ void setup() {
   Serial.begin(115200); // USB for serial monitor
   Serial1.begin(57600);  // UART for MAVLink
   do {
-    Serial.println("GNSS: trying 38400 baud");
+    Serial.println("GNSS: trying 9600 baud");
     mySerial.begin(9600);
     if (myGNSS.begin(mySerial) == true) break;
 
@@ -100,7 +100,7 @@ void setup() {
     Serial.println("GNSS: trying 9600 baud");
     mySerial.begin(9600);
     if (myGNSS.begin(mySerial) == true) {
-        Serial.println("GNSS: connected at 9600 baud, switching to 38400");
+        Serial.println("GNSS: connected at 9600 baud");
         myGNSS.setSerialRate(9600);
         delay(100);
     } else {
@@ -198,7 +198,7 @@ float pitchAngleCalc(float distance, float altitude) {
 int yawAngleCalc(int bearing) {
   float upperLimit;
   float lowerLimit;
-  int out;
+  float out;
   out = map(bearing, 0, upperLimit, -85, 85);
   //float og_bearing = bearing;
   //bool rollOverRight = false;
@@ -272,5 +272,5 @@ void loop() {
   Serial.print(F("Lon: "));
   Serial.print(AAT_LON);
   Serial.print("\n");
-  delay(200);
+  delay(100);
 }
