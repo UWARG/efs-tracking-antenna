@@ -4,23 +4,21 @@
 #include <Servo.h>
 #include <SoftwareSerial.h>
 
+#define PI 3.14159265358979323846
+#define EARTH_RADIUS 6372797.56085
+#define RADIANS PI / 180
+#define AAT_BEARING 270
 
 SoftwareSerial mySerial(2, 3); // RX, TX. Pin 10 on Uno goes to TX pin on GNSS module.
-
 SFE_UBLOX_GNSS myGNSS;
 
 Servo pitchL;
 Servo pitchR;
 Servo yaw;
 
-#define PI 3.14159265358979323846
-#define EARTH_RADIUS 6372797.56085
-#define RADIANS PI / 180
-
 //SET INITIAL ANTENNA TRACKER LOCATION AND BEARING
 float AAT_LAT = 43.473641;
 float AAT_LON = -85.540774;
-#define AAT_BEARING 270
 
 float vehicle_lat;
 float vehicle_lon;
@@ -47,8 +45,6 @@ void set_starting_gps() {
 
   AAT_LAT = myGNSS.getLatitude()/10000000.0;
   AAT_LON = myGNSS.getLongitude()/10000000.0;
-  Serial.print(F("SIV: "));
-  Serial.print(myGNSS.getSIV());
   //AAT_ALT Not implemented assume 0
   //  AAT_ALT = myGNSS.getAltitude()/100000;
   //  Serial.print(F("ALT: "));
@@ -131,22 +127,20 @@ void readPos() {
     uint8_t c = Serial1.read();
 
     if (mavlink_parse_char(MAVLINK_COMM_0, c, &msg, &status)) {
-      switch(msg.msgid)
-      {
-
+      switch(msg.msgid) {
         case MAVLINK_MSG_ID_GLOBAL_POSITION_INT: {
-      mavlink_global_position_int_t position;
-      mavlink_msg_global_position_int_decode(&msg, &position);
+          mavlink_global_position_int_t position;
+          mavlink_msg_global_position_int_decode(&msg, &position);
 
-      vehicle_lat = position.lat / 1e7;
-      vehicle_lon = position.lon / 1e7;
-      vehicle_alt = position.relative_alt / 1e3;
+          vehicle_lat = position.lat / 1e7;
+          vehicle_lon = position.lon / 1e7;
+          vehicle_alt = position.relative_alt / 1e3;
 
-      break;
+          break;
+        }
+      }
     }
-    }
-    }
-}
+  }
 }
 
 //https://stackoverflow.com/questions/27126714/c-latitude-and-longitude-distance-calculator
@@ -268,9 +262,8 @@ void loop() {
   Serial.println(inc);
   inc = inc+1;
   Serial.print(F("Lat: "));
-  Serial.print(AAT_LAT);
+  Serial.println(AAT_LAT);
   Serial.print(F("Lon: "));
-  Serial.print(AAT_LON);
-  Serial.print("\n");
+  Serial.println(AAT_LON);
   delay(100);
 }
