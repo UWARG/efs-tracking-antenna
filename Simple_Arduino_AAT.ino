@@ -20,6 +20,7 @@ Servo yaw;
 float AAT_LAT = 43.473641;
 float AAT_LON = -85.540774;
 
+int siv;
 float vehicle_lat;
 float vehicle_lon;
 float vehicle_alt;
@@ -109,6 +110,10 @@ void setup() {
   myGNSS.setUART1Output(COM_TYPE_UBX); //Set the UART port to output UBX only
   myGNSS.setI2COutput(COM_TYPE_UBX); //Set the I2C port to output UBX only (turn off NMEA noise)
   myGNSS.saveConfiguration(); //Save the current settings to flash and BBR;
+
+  do {
+    siv = myGNSS.getSIV();
+  } while(siv < 6);
 
   set_starting_gps();
 }
