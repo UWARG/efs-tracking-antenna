@@ -20,7 +20,7 @@ Servo yaw;
 float AAT_LAT = 43.473641;
 float AAT_LON = -85.540774;
 
-int siv;
+byte siv;
 float vehicle_lat;
 float vehicle_lon;
 float vehicle_alt;
@@ -76,14 +76,6 @@ void setYawAngle(float angle) {
 }
 
 void setup() {
-  // Set servo pins
-  pitchL.attach(10); // Left pitch servo
-  pitchR.attach(9); // Right pitch servo
-  yaw.attach(8); // Yaw servo
-
-  // Set initial angles
-  setYawAngle(0);
-  setPitchAngle(45);
 
   // Start serial interfaces
   Serial.begin(115200); // USB for serial monitor
@@ -116,6 +108,15 @@ void setup() {
   } while(siv < 6);
 
   set_starting_gps();
+
+   // Set servo pins
+  pitchL.attach(10); // Left pitch servo
+  pitchR.attach(9); // Right pitch servo
+  yaw.attach(8); // Yaw servo
+
+  // Set initial angles
+  setYawAngle(0);
+  setPitchAngle(45);
 }
 
 double toRadians(double degrees) {
