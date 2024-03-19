@@ -79,6 +79,7 @@ void setup() {
 
   // Start serial interfaces
   Serial.begin(115200); // USB for serial monitor
+  while (!Serial); //Wait for user to open terminal
   Serial1.begin(57600);  // UART for MAVLink
   do {
     Serial.println("GNSS: trying 9600 baud");
@@ -105,6 +106,7 @@ void setup() {
 
   do {
     siv = myGNSS.getSIV();
+    Serial.println("Getting GPS, repeating...");
   } while(siv < 6);
 
   set_starting_gps();
